@@ -11,7 +11,5 @@ VOLUME ["/data"]
 # Forward apporpriate ports
 EXPOSE 64738/tcp 64738/udp
 
-RUN groupadd -r murmur && useradd -r -g murmur murmur && chown -R murmur:murmur /data
-
 # Run murmur
 CMD ["/data/start"]
