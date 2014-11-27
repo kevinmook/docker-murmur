@@ -1,0 +1,5 @@
+#!/bin/bash -e
+
+DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+
+docker run -d -v $DIR/../data:/data -p 64738:64738/tcp -p 64738:64738/udp murmur
