@@ -2,4 +2,31 @@
 
 DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
-docker run -d -v $DIR/../data:/data -p 64738:64738/tcp -p 64738:64738/udp murmur
+usage() {
+  cat <<END
+Usage: $progname OPTIONS
+  -h            Display this help text
+  -p            Specify listen port
+
+${*:-}
+END
+  exit 1
+}
+
+while getopts "hp:" OPTION ; do
+  case $OPTION in
+    h)
+      usage
+      ;;
+    p)
+      port=$OPTARG
+      ;;
+    *)
+      usage
+      ;;
+  esac
+done
+
+port=${port:-64738}
+
+docker run -d -v $DIR/../data:/data -p $port:64738/tcp -p $port:64738/udp murmur
