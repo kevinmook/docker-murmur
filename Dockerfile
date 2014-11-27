@@ -8,8 +8,10 @@ RUN wget http://sourceforge.net/projects/mumble/files/Mumble/1.2.8/murmur-static
 # Read murmur.ini and murmur.sqlite from /data/
 VOLUME ["/data"]
 
+COPY /container_scripts/start_murmur /murmur/
+
 # Forward apporpriate ports
 EXPOSE 64738/tcp 64738/udp
 
 # Run murmur
-CMD ["/data/start"]
+CMD ["/bin/bash", "/murmur/start_murmur"]
