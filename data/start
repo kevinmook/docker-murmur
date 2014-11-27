@@ -1,0 +1,6 @@
+#/bin/bash -e
+
+# sleep a little before starting, otherwise murmur doesn't bind to a port????
+sleep 5
+
+/opt/murmur-static_x86-1.2.8/murmur.x86 -ini /data/murmur.ini -fg -v

@@ -12,4 +12,4 @@ VOLUME ["/data"]
 EXPOSE 64738/tcp 64738/udp
 
 # Run murmur
-CMD ["/opt/murmur-static_x86-1.2.8/murmur.x86", "-ini", "/data/murmur.ini", "-fg", "-v"]
+CMD ["/data/start"]
