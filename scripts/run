@@ -13,16 +13,13 @@ END
   exit 1
 }
 
-while getopts "hp:i" OPTION ; do
+while getopts "hp:" OPTION ; do
   case $OPTION in
     h)
       usage
       ;;
     p)
       port=$OPTARG
-      ;;
-    i)
-      interactive=true
       ;;
     *)
       usage
@@ -32,8 +29,4 @@ done
 
 port=${port:-64738}
 
-if [ $interactive ]; then
-  docker run -t -i -v $DIR/../data:/data -p $port:64738/tcp -p $port:64738/udp murmur /bin/bash
-else
-  docker run --restart=always -d -v $DIR/../data:/data -p $port:64738/tcp -p $port:64738/udp murmur
-fi
+docker run --restart=always -d -v $DIR/../data:/data -p $port:64738/tcp -p $port:64738/udp murmur
