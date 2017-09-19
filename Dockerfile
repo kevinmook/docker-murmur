@@ -1,17 +1,25 @@
 FROM ubuntu:14.04
 MAINTAINER Matt Kemp <matt@mattikus.com>
 
-RUN apt-get update && apt-get install -y wget
-# Download statically compiled murmur and install it to /opt
-RUN wget http://sourceforge.net/projects/mumble/files/Mumble/1.2.8/murmur-static_x86-1.2.8.tar.bz2/download -O - | bzcat -f | tar -x -C /opt -f -
+ENV version=1.2.19
 
-# Read murmur.ini and murmur.sqlite from /data/
-VOLUME ["/data"]
+# Download statically compiled murmur and install it to /opt/murmur
+ADD https://github.com/mumble-voip/mumble/releases/download/${version}/murmur-static_x86-${version}.tar.bz2 /opt/
+RUN bzcat /opt/murmur-static_x86-${version}.tar.bz2 | tar -x -C /opt -f - && \
+    rm /opt/murmur-static_x86-${version}.tar.bz2 && \
+    mv /opt/murmur-static_x86-${version} /opt/murmur
+
+# Copy in our slightly tweaked INI which points to our volume
+COPY murmur.ini /etc/murmur.ini
 
 COPY /container_scripts/start_murmur /murmur/
 
 # Forward apporpriate ports
 EXPOSE 64738/tcp 64738/udp
 
+# Read murmur.ini and murmur.sqlite from /data/
+VOLUME ["/data"]
+
 # Run murmur
-CMD ["/bin/bash", "/murmur/start_murmur"]
+ENTRYPOINT ["/opt/murmur/murmur.x86", "-fg", "-v"]
+CMD ["-ini", "/etc/murmur.ini"]
