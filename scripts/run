@@ -35,5 +35,5 @@ port=${port:-64738}
 if [ $interactive ]; then
   docker run -t -i -v $DIR/../data:/data -p $port:64738/tcp -p $port:64738/udp murmur /bin/bash
 else
-  docker run -d -v $DIR/../data:/data -p $port:64738/tcp -p $port:64738/udp murmur
+  docker run --restart=always -d -v $DIR/../data:/data -p $port:64738/tcp -p $port:64738/udp murmur
 fi
